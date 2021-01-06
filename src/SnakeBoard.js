@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import './SnakeBoard.css'
 
 const SnakeBoard = () => {
   /*
@@ -28,7 +29,7 @@ const SnakeBoard = () => {
 
   // Tässä kohdassa tehdään kaksiulotteisesta taulukosta näkyvä versio pelikentästä
   const displayRows = rows.map(row =>
-    <div className='Snake-row'>{row.map(tile => <div className={tile} /> )}</div>
+    <div className='Snake-row'>{row.map(tile => <div className={`tile ${tile}`} /> )}</div>
   )
 
   return (
