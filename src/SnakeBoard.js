@@ -33,6 +33,26 @@ const SnakeBoard = () => {
   // Alustetaan madon suunnaksi oikealle
   const [direction, setDirection] = useState('right')
 
+  const changeDirectionWithKeys = (e) => {
+    var { keyCode } = e;
+    switch(keyCode) {
+      case 37:
+        setDirection('left')
+        break
+      case 38:
+        setDirection('top')
+        break
+      case 39:
+        setDirection('right')
+        break
+      case 40:
+        setDirection('bottom')
+        break
+      default: break
+    }
+  }
+  document.addEventListener("keydown", changeDirectionWithKeys, false)
+
   // Tässä kohdassa tehdään kaksiulotteisesta taulukosta näkyvä versio pelikentästä
   const displayRows = rows.map(row =>
     <div className='Snake-row'>{row.map(tile => <div className={`tile ${tile}`} /> )}</div>
@@ -53,6 +73,18 @@ const SnakeBoard = () => {
       case 'right':
         // x pysyy samana, y menee yhden askeleen oikealle eli plus yksi
         newSnake.push({x: snake[0].x, y: (snake[0].y + 1) % width})
+        break
+      case 'left':
+        // x pysyy samana, y menee yhden askeleen vasemmalle eli miinus yksi
+        newSnake.push({x: snake[0].x, y: (snake[0].y - 1 + width) % width})
+        break
+      case 'top':
+        // x menee yhden askeleen ylöspäin eli miinus yksi, y pysyy samana
+        newSnake.push({x: (snake[0].x - 1 + height) % height, y: snake[0].y})
+        break
+      case 'bottom':
+        // x menee yhden askeleen alaspäin eli plus yksi, y pysyy samana
+        newSnake.push({x: (snake[0].x + 1) % height, y: snake[0].y})
         break
       default:
         break
