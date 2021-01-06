@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useInterval} from './utils'
 import './SnakeBoard.css'
 
 const SnakeBoard = () => {
@@ -26,11 +27,42 @@ const SnakeBoard = () => {
   */
   // Rows eli rivit merkitsee tässä pelilaudan rivejä
   const [rows, setRows] = useState(initialRows)
+  // Lisätään mato. Mato on lista objekteja, joihin tallennetaan madon osien x ja y -sijainnit.
+  // Alustetaan madon pään sijainniksi {x:0, y:0}
+  const [snake, setSnake] = useState([{x:0, y:0}])
+  // Alustetaan madon suunnaksi oikealle
+  const [direction, setDirection] = useState('right')
 
   // Tässä kohdassa tehdään kaksiulotteisesta taulukosta näkyvä versio pelikentästä
   const displayRows = rows.map(row =>
     <div className='Snake-row'>{row.map(tile => <div className={`tile ${tile}`} /> )}</div>
   )
+
+  // Asetetaan mato pelilaudalle madon x ja y -sijaintien mukaisesti
+  const displaySnake = () => {
+      const newRows = initialRows
+      snake.forEach(tile => {newRows[tile.x][tile.y] = 'snake'})
+      setRows(newRows)
+  }
+
+  // Liikutetaan matoa haluttuun suuntaan
+  const moveSnake = () => {
+    const newSnake = []
+    switch(direction) {
+      // snake[0] on madon ensimmäinen osa eli pää
+      case 'right':
+        // x pysyy samana, y menee yhden askeleen oikealle eli plus yksi
+        newSnake.push({x: snake[0].x, y: (snake[0].y + 1) % width})
+        break
+      default:
+        break
+    }
+    setSnake(newSnake)
+    displaySnake()
+  }
+
+  // Käytetään kustomoitua intervalli-funktiota madon liikuttamiseen
+  useInterval(moveSnake, 250)
 
   return (
     <div className='Snake-board'>
