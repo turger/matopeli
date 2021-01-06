@@ -43,6 +43,9 @@ const SnakeBoard = () => {
   const [direction, setDirection] = useState('right')
   // Käytetään randomPosition funktiota alustamaan ruuan sijainti kun mato syö ruuan
   const [food, setFood] = useState(randomPosition)
+  // Tallennetaan interval id stateen, jotta sen voi pelin loppuessa pysäyttää
+  const [intervalId, setIntervalId] = useState()
+  const [isGameOver, setIsGameOver] = useState(false)
 
   const changeDirectionWithKeys = (e) => {
     var { keyCode } = e;
@@ -78,6 +81,13 @@ const SnakeBoard = () => {
       setRows(newRows)
   }
 
+  // Tarkistetaan onko mato osunut itseensä
+  const checkGameOver = () => {
+    const head = snake[0]
+    const body = snake.slice(1, -1)
+    return body.find(b => b.x === head.x && b.y === head.y)
+  }
+
   // Liikutetaan matoa haluttuun suuntaan
   const moveSnake = () => {
     const newSnake = []
@@ -105,6 +115,12 @@ const SnakeBoard = () => {
         break
     }
 
+    if (checkGameOver()) {
+      setIsGameOver(true)
+      // Pysäytä madon liikkumisen intervalli
+      clearInterval(intervalId)
+    }
+
     // Lisätään madolle joka intervallilla / "askeleella" uusi pala
     snake.forEach(tile => { newSnake.push(tile) })
 
@@ -122,11 +138,12 @@ const SnakeBoard = () => {
   }
 
   // Käytetään kustomoitua intervalli-funktiota madon liikuttamiseen
-  useInterval(moveSnake, 250)
+  useInterval(moveSnake, 250, setIntervalId)
 
   return (
     <div className='Snake-board'>
-     {displayRows}
+      {displayRows}
+      {isGameOver && <div className='Game-over'>Game over!</div>}
     </div>
   )
 }

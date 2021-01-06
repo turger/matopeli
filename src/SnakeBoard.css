@@ -1,4 +1,5 @@
 .Snake-board {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,4 +32,14 @@
 
 .food::after {
   content: "🍎";
+}
+
+.Game-over {
+  position: absolute;
+  font-family: 'Hanalei Fill', cursive;
+  font-size: 50px;
+  color: red;
+  background-color: aqua;
+  font-weight: bold;
+  padding: 10px;
 }
