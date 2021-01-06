@@ -1,4 +1,5 @@
 import './App.css'
+import SnakeBoard from './SnakeBoard'
 
 function App() {
   return (
@@ -6,6 +7,7 @@ function App() {
       <header className="App-header">
         Matopeli
       </header>
+      <SnakeBoard />
     </div>
   )
 }
