@@ -24,3 +24,11 @@
 .snake {
   background: green;
 }
+
+.food {
+  background: pink;
+}
+
+.food::after {
+  content: "🍎";
+}

@@ -21,6 +21,15 @@ const SnakeBoard = () => {
     }
   }
 
+  // Satunnainen sijainti x ja y -koordinaatistossa
+  const randomPosition = () => {
+    const position = {
+      x: Math.floor(Math.random() * width),
+      y: Math.floor(Math.random() * height)
+    }
+    return position
+  }
+
   /*
   Reactin statea voi käyttää Hookien avulla myös tällaisissa luokattomissa
   komponenteissa. https://joinex.fi/react-pahkinankuoressa/
@@ -32,6 +41,8 @@ const SnakeBoard = () => {
   const [snake, setSnake] = useState([{x:0, y:0}])
   // Alustetaan madon suunnaksi oikealle
   const [direction, setDirection] = useState('right')
+  // Käytetään randomPosition funktiota alustamaan ruuan sijainti kun mato syö ruuan
+  const [food, setFood] = useState(randomPosition)
 
   const changeDirectionWithKeys = (e) => {
     var { keyCode } = e;
@@ -59,9 +70,11 @@ const SnakeBoard = () => {
   )
 
   // Asetetaan mato pelilaudalle madon x ja y -sijaintien mukaisesti
+  // Asetetaan samalla myös ruoka pelilaudalle (x,y)
   const displaySnake = () => {
       const newRows = initialRows
       snake.forEach(tile => {newRows[tile.x][tile.y] = 'snake'})
+      newRows[food.x][food.y] = 'food'
       setRows(newRows)
   }
 
@@ -69,6 +82,8 @@ const SnakeBoard = () => {
   const moveSnake = () => {
     const newSnake = []
     switch(direction) {
+      // Jakojäännös (%) tarkoittaa jakolaskussa yli jäävää kokonaislukua.
+      // Esimerkiksi jos luku 17 jaetaan luvulla 5, jakojäännös on 2, koska 3 · 5 = 15, mutta 2 jää yli.
       // snake[0] on madon ensimmäinen osa eli pää
       case 'right':
         // x pysyy samana, y menee yhden askeleen oikealle eli plus yksi
@@ -89,6 +104,19 @@ const SnakeBoard = () => {
       default:
         break
     }
+
+    // Lisätään madolle joka intervallilla / "askeleella" uusi pala
+    snake.forEach(tile => { newSnake.push(tile) })
+
+    // Vaihdetaan ruuan sijaintia jos mato syö ruuan.
+    if(snake[0].x === food.x && snake[0].y === food.y) {
+      setFood(randomPosition)
+    } else {
+      // Jos mato ei syö ruokaa, poistetaan viimeinen hännän pala,
+      // jottei mato kasva joka askeleella, vaan vain silloin kun se saa ruuan kiinni!
+      newSnake.pop()
+    }
+
     setSnake(newSnake)
     displaySnake()
   }
