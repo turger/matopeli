@@ -119,6 +119,11 @@ const SnakeBoard = ({points, setPoints}) => {
       setIsGameOver(true)
       // Pysäytä madon liikkumisen intervalli
       clearInterval(intervalId)
+      // Lisää pisteet local storageen tulostaulukkoa varten
+      // HUOM! Local storage hyväksyy vain JSON:ia
+      const pointsList = JSON.parse(localStorage.getItem('snake-points')) || []
+      pointsList.push(points)
+      localStorage.setItem('snake-points', JSON.stringify(pointsList))
     }
 
     // Lisätään madolle joka intervallilla / "askeleella" uusi pala
