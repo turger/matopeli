@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useInterval} from './utils'
 import './SnakeBoard.css'
 
-const SnakeBoard = () => {
+const SnakeBoard = ({points, setPoints}) => {
   /*
   initialRows on kaksiulotteinen array eli taulukko
   alustettuna pelkillä tyhjillä arvoilla 'blank'
@@ -127,6 +127,7 @@ const SnakeBoard = () => {
     // Vaihdetaan ruuan sijaintia jos mato syö ruuan.
     if(snake[0].x === food.x && snake[0].y === food.y) {
       setFood(randomPosition)
+      setPoints(points+1)
     } else {
       // Jos mato ei syö ruokaa, poistetaan viimeinen hännän pala,
       // jottei mato kasva joka askeleella, vaan vain silloin kun se saa ruuan kiinni!
