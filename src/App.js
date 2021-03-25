@@ -15,6 +15,7 @@ function App() {
         <Points points={points} />
         <SnakeBoard points={points} setPoints={setPoints} />
       </div>
+      <button onClick={() => window.location.reload(false)}>Uusi peli</button>
     </div>
   )
 }

@@ -68,8 +68,8 @@ const SnakeBoard = ({points, setPoints}) => {
   document.addEventListener("keydown", changeDirectionWithKeys, false)
 
   // Tässä kohdassa tehdään kaksiulotteisesta taulukosta näkyvä versio pelikentästä
-  const displayRows = rows.map(row =>
-    <div className='Snake-row'>{row.map(tile => <div className={`tile ${tile}`} /> )}</div>
+  const displayRows = rows.map((row, i) =>
+    <div className='Snake-row' key={i}>{row.map((tile, j) => <div className={`tile ${tile}`} key={j} /> )}</div>
   )
 
   // Asetetaan mato pelilaudalle madon x ja y -sijaintien mukaisesti
