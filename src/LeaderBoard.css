@@ -1,0 +1,21 @@
+.LeaderBoard {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.LeaderBoard-header {
+  padding: 5px;
+  font-size: 20px;
+  background-color: blueviolet;
+  color: white;
+}
+
+.LeaderBoard-points {
+  padding: 5px;
+  background-color: khaki;
+  font-size: 15px;
+}
+
+.LeaderBoard-points > div:nth-child(odd) {
+  background-color: violet;
+}
