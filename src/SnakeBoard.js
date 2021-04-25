@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useInterval} from './utils'
+import {useInterval, range} from './utils'
 import './SnakeBoard.css'
 
 const SnakeBoard = ({points, setPoints}) => {
@@ -21,11 +21,38 @@ const SnakeBoard = ({points, setPoints}) => {
     }
   }
 
+  const obstacles = [
+    {name: 'tyhjä',location: []},
+    {
+      name: 'keski',
+      location: range(width * 0.60).map(
+        (y) => ({x: Math.round(height/2), y: y+Math.ceil(width*0.2)})
+      )
+    },
+    {
+      name: 'reunat',
+      location: [
+        // Ulommaiset reunat
+        ...range(width).map(x => ({x, y: 0})),
+        ...range(width).map(x => ({x, y: height-1})),
+        ...range(height).map(y => ({x: 0, y})),
+        ...range(height).map(y => ({x: width-1, y})),
+      ]
+    },
+    // TODO: Oppitunnilla kaikki tekee kolmannen oman esteen!
+  ]
+
+  const randomObstacle = () =>
+    obstacles[Math.floor(Math.random() * obstacles.length)]
+
   // Satunnainen sijainti x ja y -koordinaatistossa
   const randomPosition = () => {
     const position = {
       x: Math.floor(Math.random() * width),
       y: Math.floor(Math.random() * height)
+    }
+    if (obstacle.location.some(({x,y}) => position.x === x && position.y === y)) {
+      return randomPosition()
     }
     return position
   }
@@ -35,10 +62,11 @@ const SnakeBoard = ({points, setPoints}) => {
   komponenteissa. https://joinex.fi/react-pahkinankuoressa/
   */
   // Rows eli rivit merkitsee tässä pelilaudan rivejä
+  const [obstacle] = useState(randomObstacle())
   const [rows, setRows] = useState(initialRows)
   // Lisätään mato. Mato on lista objekteja, joihin tallennetaan madon osien x ja y -sijainnit.
   // Alustetaan madon pään sijainniksi {x:0, y:0}
-  const [snake, setSnake] = useState([{x:0, y:0}])
+  const [snake, setSnake] = useState([{x:1, y:1}])
   // Alustetaan madon suunnaksi oikealle
   const [direction, setDirection] = useState('right')
   // Käytetään randomPosition funktiota alustamaan ruuan sijainti kun mato syö ruuan
@@ -78,6 +106,7 @@ const SnakeBoard = ({points, setPoints}) => {
       const newRows = initialRows
       snake.forEach(tile => {newRows[tile.x][tile.y] = 'snake'})
       newRows[food.x][food.y] = 'food'
+      obstacle.location.forEach(tile => {newRows[tile.x][tile.y] = 'obstacle'})
       setRows(newRows)
   }
 
@@ -85,7 +114,9 @@ const SnakeBoard = ({points, setPoints}) => {
   const checkGameOver = () => {
     const head = snake[0]
     const body = snake.slice(1, -1)
-    return body.find(b => b.x === head.x && b.y === head.y)
+    const hitsSnake = body.find(b => b.x === head.x && b.y === head.y)
+    const hitsWall = obstacle.location.some(({x,y}) => head.x === x && head.y === y)
+    return hitsSnake || hitsWall
   }
 
   // Liikutetaan matoa haluttuun suuntaan

@@ -26,6 +26,10 @@
   background: green;
 }
 
+.obstacle {
+  background: olive;
+}
+
 .food {
   background: pink;
 }

@@ -26,3 +26,6 @@ export const useInterval = (callback, delay, setIntervalId) => {
     }
   }, [delay, setIntervalId])
 }
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+export const range = (number) => [...Array(Math.round(number)).keys()]
