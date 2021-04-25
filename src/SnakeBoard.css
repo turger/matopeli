@@ -18,6 +18,11 @@
   border: 1px solid olive;
 }
 
+.tile.small {
+  width: 10px;
+  height: 10px;
+}
+
 .blank {
   background: white;
 }
@@ -38,6 +43,10 @@
   content: "🍎";
 }
 
+.Board-size {
+  padding: 10px;
+}
+
 .Game-over {
   position: absolute;
   font-family: 'Hanalei Fill', cursive;
@@ -46,4 +55,19 @@
   background-color: aqua;
   font-weight: bold;
   padding: 10px;
+}
+
+.Start-game {
+  font-size: 20px;
+  font-family: 'Hanalei Fill', cursive;
+  color: pink;
+  border-radius: 10px;
+  background-color: black;
+  letter-spacing: 2px;
+  padding: 10px;
+  margin: 20px;
+}
+
+.Error {
+  color: red;
 }
